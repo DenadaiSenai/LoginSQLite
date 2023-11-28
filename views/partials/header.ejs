@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-warning text-dark bd-highlight">
+    <a class="navbar-brand" href="/">SENAI I1HS/I1HN</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+        </li>
+        <% if(!req.session.loggedin){ %>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cadastrar">Cadastrar</a>
+            </li>
+        <% } else{ %>
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Sair (<%= req.session.username %>)</a>
+            </li>
+        <% } %>
+    </ul>
+</nav>
