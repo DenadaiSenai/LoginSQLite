@@ -1,0 +1,19 @@
+{
+  "name": "loginsqlite",
+  "version": "0.0.1",
+  "description": "Login com SQLite",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcio Denadai",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.6"
+  }
+}
