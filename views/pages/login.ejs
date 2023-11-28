@@ -62,30 +62,31 @@
 
 <body class="container">
 
-    <header>
+    <header class="container">
         <%- include('../partials/header'); %>
     </header>
 
-    <main>
-        <div class="login-container">
-            <div class="login-card">
+    <main class="container">
+        <!-- <div class="jumbotron"></div> -->
+        <div class="container-sm border">
+            <div class="form-group">
                 <h3 style="text-align: center;">Login</h3>
                 <form action="/login" method="post">
-                    <div class="login-fields">
-                        <div><label for="username" style="width: 30vw;">Usuário:</label></div>
-                        <div><input type="text" id="username" name="username" required style="width: 30vw;"></div>
+                    <div class="form-group">
+                        <div><label for="username" >Usuário:</label></div>
+                        <div><input type="text" id="username" name="username" required class="form-control"></div>
                     </div>
-                    <div class="login-fields">
+                    <div class="form-group">
                         <div><label for="password">Senha:</label></div>
-                        <div> <input type="password" id="password" name="password" required style="width: 30vw;"></div>
+                        <div> <input type="password" id="password" name="password" required class="form-control"></div>
                     </div>
-                    <div class="login-fields"><button type="submit">Login</button></div>
+                    <div><button type="submit" class="form-control btn btn-dark">Login</button></div>
                 </form>
             </div>
         </div>
     </main>
 
-    <footer>
+    <footer class="container">
         <%- include('../partials/footer'); %>
     </footer>
 

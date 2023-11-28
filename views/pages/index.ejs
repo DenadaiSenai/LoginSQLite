@@ -9,9 +9,10 @@
 
   <header>
     <%- include('../partials/header'); %>
-      <% if(req.session.loggedin) { %>
-        <%- include('../partials/menu_dashboard'); %>
-          <% } %>
+      
+    <% if(req.session.loggedin) { %>
+      <%- include('../partials/menu_dashboard'); %>
+    <% } %>
   </header>
 
   <main>
