@@ -19,17 +19,18 @@ Usuário : marcio
 Senha   : 123
 ```
 ## A fazer (TO DO)
-1 - Criptografar as senhas no banco de dados  
-2 - Configurar o banco de dados a usar somente comparação _'BINÁRIA'_, para evitar o efeito de _'cadastro duplicado'_
+- [ ] Criptografar as senhas no banco de dados  
+- [X] Configurar o banco de dados a usar somente comparação _'BINÁRIA'_, para evitar o efeito de _'cadastro duplicado'_  
+- [ ] Criar um campo extra na página de cadastro para verificar a senha antes de realizar o inclusão no banco de dados
 
 ## Ambiente de execução e teste
->Windows 10 Education 22H2
->>Nodejs - v16.16.0  
+***Windows 10 Education 22H2***  
+_Nodejs - v16.16.0_  
 
-> Linux Ubuntu 20.04.6 LTS
->>Nodejs - v18.17.1  
+***Linux Ubuntu 20.04.6 LTS***  
+_Nodejs - v18.17.1_  
 
 ### Autor:
->**Marcio Denadai**  
->_Instrutor de Formação Profissional_  
->_SENAI 'Celso Charuri' - Sumaré / SP - CFP 5.12_  
+***Marcio Denadai***  
+_Instrutor de Formação Profissional_  
+_SENAI 'Celso Charuri' - Sumaré / SP - CFP 5.12_  
