@@ -29,17 +29,21 @@ app.use('/', express.static(__dirname + '/static'));
 // Lembre-se que para uso do EJS uma pasta (diretório) 'views', precisa existir na raiz do projeto.
 // E que todos os EJS serão processados a partir desta pasta
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configurar EJS como o motor de visualização
 app.set('view engine', 'ejs');
 
 // Configuração das rotas do servidor HTTP
 // A lógica ddo processamento de cada rota deve ser realizada aqui
 app.get('/', (req, res) => {
+  // Passe a variável 'req' para o template e use-a nas páginas para renderizar partes do HTML conforme determinada condição
+  // Por exemplo de o usuário estive logado, veja este exemplo no arquivo views/partials/header.ejs
   res.render('pages/index', { req: req });
   // Caso haja necessidade coloque pontos de verificação para verificar pontos da sua logica de negócios
   console.log(`${req.session.username ? `User ${req.session.username} logged in from IP ${req.connection.remoteAddress}` : 'User not logged in.'}  `);
 });
 
-
+// Rota para a página de login
 app.get('/login', (req, res) => {
   // Quando for renderizar páginas pelo EJS, passe parametros para ele em forma de JSON
   res.render('pages/login', { req: req }); // Neste exemplo a váriavel req, que contém informações sobre a sessão está sendo enviada para o EJS
@@ -49,6 +53,7 @@ app.get('/about', (req, res) => {
   res.render('pages/about', { req: req });
 });
 
+// Rota para processar o formulário de login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -141,5 +146,7 @@ app.get('/teste', (req, res) => {
 
 // Iniciar o servidor HTTP na porta especificada. Exemplo: 3000
 app.listen(3000, () => {
-  console.log('Server running on port 3000');
+  console.log('---------LoginSQLite----------')
+  console.log('Servidor rodando na porta 3000');
+  
 });
