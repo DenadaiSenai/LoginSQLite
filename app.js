@@ -5,15 +5,15 @@ const sqlite3 = require('sqlite3').verbose(); // Import SQLite
 
 const app = express();
 
-// Configuring the SQLite database
-const db = new sqlite3.Database('user.db');
+// Configurando o banco de dados SQLite
+const db = new sqlite3.Database('user.db'); // Altere o nome do arquivo do banco de dados se precisar
 
-// Create users table if it doesn't exist
+// Cria a tabela 'users' se não existir no arquivo do SQLite
 db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)");
 });
 
-// Configure session
+// Configuraq a sessão, troque a senha de criptografia, para uma senha segura para que não acessem os cookies de sessão no Browser
 app.use(
   session({
     secret: 'YourSecretKeyForSessionEncryption',
@@ -22,17 +22,27 @@ app.use(
   })
 );
 
+// Configura uma rota estática, colocar nesta pasta arquivos de imagem, css, pdf, etc...
 app.use('/', express.static(__dirname + '/static'));
+
+// Engine do Express para processar o EJS (templates)
+// Lembre-se que para uso do EJS uma pasta (diretório) 'views', precisa existir na raiz do projeto.
+// E que todos os EJS serão processados a partir desta pasta
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
+// Configuração das rotas do servidor HTTP
+// A lógica ddo processamento de cada rota deve ser realizada aqui
 app.get('/', (req, res) => {
   res.render('pages/index', { req: req });
+  // Caso haja necessidade coloque pontos de verificação para verificar pontos da sua logica de negócios
   console.log(`${req.session.username ? `User ${req.session.username} logged in from IP ${req.connection.remoteAddress}` : 'User not logged in.'}  `);
 });
 
+
 app.get('/login', (req, res) => {
-  res.render('pages/login', { req: req });
+  // Quando for renderizar páginas pelo EJS, passe parametros para ele em forma de JSON
+  res.render('pages/login', { req: req }); // Neste exemplo a váriavel req, que contém informações sobre a sessão está sendo enviada para o EJS
 });
 
 app.get('/about', (req, res) => {
@@ -48,8 +58,11 @@ app.post('/login', (req, res) => {
     if (err) throw err;
 
     if (row) {
+      // Utilize req.session às variáveis de sessão para controlar a lógica de sua página em função da sessão, como 
+      // por exemplo se o usuário está autenticado (logado).
       req.session.loggedin = true;
-      req.session.username = username;
+      req.session.username = username; // Crie variáveis de controle adicionais caso haja ncessidade
+      // req.session.dataLogin = new Date() // Exemplo de criação de variável de sessão para controlar o tempo de login.
       res.redirect('/dashboard');
     } else {
       res.redirect('/login_failed');
@@ -57,6 +70,7 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Rota para efetuar o cadastro de usuário no banco de dados
 app.get('/cadastrar', (req, res) => {
   if (!req.session.loggedin) {
     res.render('pages/cadastrar', { req: req });
@@ -67,7 +81,7 @@ app.get('/cadastrar', (req, res) => {
 
 app.post('/cadastrar', (req, res) => {
   const { username, password } = req.body;
-
+  // Verifica se o usuário já se encontra cadastrado
   const query = 'SELECT * FROM users WHERE username = ?';
 
   db.get(query, [username], (err, row) => {
@@ -76,10 +90,11 @@ app.post('/cadastrar', (req, res) => {
     if (row) {
       res.redirect('/register_failed');
     } else {
+      // Caso não esteja cadastrado, cadastra o usuário
       const insertQuery = 'INSERT INTO users (username, password) VALUES (?, ?)';
       db.run(insertQuery, [username, password], (err) => {
         if (err) throw err;
-
+        // Aqui o login será efetuado, após o cadastro.
         req.session.loggedin = true;
         req.session.username = username;
         res.redirect('/register_ok');
@@ -101,6 +116,7 @@ app.get('/login_failed', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
+  // Exemplo de uma rota (END POINT) controlado pela sessão do usuário logado.
   if (req.session.loggedin) {
     res.render('pages/dashboard', { req: req });
   } else {
@@ -108,7 +124,12 @@ app.get('/dashboard', (req, res) => {
   }
 });
 
+// Rota para processar a saida (logout) do usuário
+// Utilize-o para encerrar a sessão do usuário
+// Dica 1: Coloque um link de 'SAIR' na sua aplicação web
+// Dica 2: Você pode implementar um controle de tempo de sessão e encerrar a sessão do usuário caso este tempo passe.
 app.get('/logout', (req, res) => {
+  // Exemplo de uma rota (END POINT) controlado pela sessão do usuário logado.
   req.session.destroy(() => {
     res.redirect('/');
   });
@@ -118,6 +139,7 @@ app.get('/teste', (req, res) => {
   res.render('pages/teste', { req: req });
 });
 
+// Iniciar o servidor HTTP na porta especificada. Exemplo: 3000
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });

@@ -3,13 +3,16 @@
 </head>
 
 <body class="container">
-
     <header>
         <%- include('../partials/header'); %>
+        <!-- 
+            Exemplo de uso das variáveis de sessão para controle da renderização
+            da página HTML. No app.js é necessário passar este parâmetro para ser
+            processado aqui pelo EJS
+        -->
         <% if(req.session.loggedin) { %>
         <%- include('../partials/menu_dashboard'); %>
         <% } %>
-
     </header>
 
     <main style="max-height: 30%;">
