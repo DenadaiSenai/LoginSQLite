@@ -122,10 +122,19 @@ app.get('/login_failed', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
   // Exemplo de uma rota (END POINT) controlado pela sessão do usuário logado.
+
   if (req.session.loggedin) {
-    res.render('pages/dashboard', { req: req });
+    const query = 'SELECT * FROM users';
+
+    db.all(query, (err, rows) => {
+      if (err) throw err;
+      //if (row) {
+        console.log(rows);
+        res.render('pages/dashboard', { row: rows, req: req });
+      //}
+    });
   } else {
-    res.send('Please login to access this page. <a href="/">Login</a>');
+    res.redirect('/login_failed');
   }
 });
 
@@ -148,5 +157,5 @@ app.get('/teste', (req, res) => {
 app.listen(3000, () => {
   console.log('---------LoginSQLite----------')
   console.log('Servidor rodando na porta 3000');
-  
+
 });
