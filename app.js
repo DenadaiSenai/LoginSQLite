@@ -1,7 +1,9 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose(); // Import SQLite
+const https = require('https');
+const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
 
@@ -13,7 +15,7 @@ db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)");
 });
 
-// Configuraq a sessão, troque a senha de criptografia, para uma senha segura para que não acessem os cookies de sessão no Browser
+// Configuração da sessão
 app.use(
   session({
     secret: 'YourSecretKeyForSessionEncryption',
@@ -28,11 +30,12 @@ app.use('/', express.static(__dirname + '/static'));
 // Engine do Express para processar o EJS (templates)
 // Lembre-se que para uso do EJS uma pasta (diretório) 'views', precisa existir na raiz do projeto.
 // E que todos os EJS serão processados a partir desta pasta
+
+// Configuração do middleware para o EJS
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurar EJS como o motor de visualização
 app.set('view engine', 'ejs');
-
 // Configuração das rotas do servidor HTTP
 // A lógica ddo processamento de cada rota deve ser realizada aqui
 app.get('/', (req, res) => {
@@ -153,8 +156,26 @@ app.get('/teste', (req, res) => {
   res.render('pages/teste', { req: req });
 });
 
-// Iniciar o servidor HTTP na porta especificada. Exemplo: 3000
-app.listen(3000, () => {
-  console.log('---------LoginSQLite----------')
-  console.log('Servidor rodando na porta 3000');
-});
+// Verificar se a pasta 'certs' existe
+const certsPath = './certs';
+if (fs.existsSync(certsPath)) {
+  // Configuração para HTTPS
+  const privateKey = fs.readFileSync(`${certsPath}/localhost.key`, 'utf8');
+  const certificate = fs.readFileSync(`${certsPath}/localhost.crt`, 'utf8');
+  const credentials = { key: privateKey, cert: certificate };
+
+  // Criar um servidor HTTPS
+  const httpsServer = https.createServer(credentials, app);
+
+  httpsServer.listen(3000, () => {
+    console.log('---------LoginSQLite----------')
+    console.log('Servidor HTTPS rodando na porta 3000');
+  });
+} else {
+  // Iniciar o servidor HTTP na porta 3000
+  app.listen(3000, () => {
+    console.log('---------LoginSQLite----------')
+    console.log('Servidor HTTP rodando na porta 3000. HTTPS não disponível (pasta "certs" não encontrada).');
+  });
+}
+
