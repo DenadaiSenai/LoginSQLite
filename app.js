@@ -120,6 +120,7 @@ app.get('/register_ok', (req, res) => {
 });
 
 app.get('/login_failed', (req, res) => {
+  console.log(JSON.stringify(req.status));
   res.render('pages/login_failed', { req: req });
 });
 
