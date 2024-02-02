@@ -174,9 +174,9 @@ if (fs.existsSync(certsPath)) {
   });
 } else {
   // Iniciar o servidor HTTP na porta 3000
-  app.listen(3000, () => {
+  app.listen(3001, () => {
     console.log('---------LoginSQLite----------')
-    console.log('Servidor HTTP rodando na porta 3000. HTTPS não disponível (pasta "certs" não encontrada).');
+    console.log('Servidor HTTP rodando na porta 3001. HTTPS não disponível (pasta "certs" não encontrada).');
   });
 }
 
