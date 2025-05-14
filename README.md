@@ -45,4 +45,4 @@ _Nodejs - v18.17.1_
 
 **_Marcio Denadai_**  
 _Instrutor de Formação Profissional_  
-_SENAI 'Celso Charuri' - Sumaré / SP - CFP 5.12_
+_SENAI 'Dr. Celso Charuri' - Sumaré / SP - CFP 5.12_
